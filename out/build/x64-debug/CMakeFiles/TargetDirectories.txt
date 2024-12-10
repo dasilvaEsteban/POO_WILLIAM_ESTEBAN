@@ -1,0 +1,5 @@
+C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/POO_WILLIAM_ESTEBAN/CMakeFiles/POO_WILLIAM_ESTEBAN.dir
+C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/POO_WILLIAM_ESTEBAN/CMakeFiles/edit_cache.dir
+C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/POO_WILLIAM_ESTEBAN/CMakeFiles/rebuild_cache.dir

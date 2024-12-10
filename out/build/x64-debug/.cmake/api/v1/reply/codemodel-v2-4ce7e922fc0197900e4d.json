@@ -1,0 +1,76 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "POO_WILLIAM_ESTEBAN",
+					"jsonFile" : "directory-POO_WILLIAM_ESTEBAN-Debug-cc2f864c9813c99f06e1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "POO_WILLIAM_ESTEBAN",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "POO_WILLIAM_ESTEBAN",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "POO_WILLIAM_ESTEBAN::@2f1d6d8f7eeef2a287aa",
+					"jsonFile" : "target-POO_WILLIAM_ESTEBAN-Debug-86055ef217fca71e8efa.json",
+					"name" : "POO_WILLIAM_ESTEBAN",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug",
+		"source" : "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
