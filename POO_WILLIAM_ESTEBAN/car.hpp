@@ -1,5 +1,5 @@
 //#pragma once
-//#define _USE_MATH_DEFINESlll
+//#define _USE_MATH_DEFINESllljjj
 //#include <cmath>
 //
 //class Car{
