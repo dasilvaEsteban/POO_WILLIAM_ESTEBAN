@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/POO_WILLIAM_ESTEBAN
+# Install script for directory: C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/POO_WILLIAM_ESTEBAN
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/esteban.da-silva/Source/Repos/POO_WILLIAM_ESTEBAN/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/unive/Source/Repos/POO_WILLIAM_ESTEBAN/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

@@ -15,10 +15,11 @@ Traffic_color operator++(Traffic_color& traffic_color)
         break;
 
     case Traffic_color::green:
-        std::this_thread::sleep_for(time_transit);
         traffic_color = Traffic_color::orange;
-        std::this_thread::sleep_for(time_transit);
+        break;
+    case Traffic_color::orange:
         traffic_color = Traffic_color::red;
+        break;
     }
     return traffic_color;
 }
@@ -64,4 +65,3 @@ std::ostream& operator<<(std::ostream& os, const Traffic_light& traffic_light)
     os << ptr;
     return os;
 }
-

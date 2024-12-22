@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN
+# Install script for directory: C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/esteban.da-silva/Source/Repos/POO_WILLIAM_ESTEBAN/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/unive/Source/Repos/POO_WILLIAM_ESTEBAN/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/POO_WILLIAM_ESTEBAN/cmake_install.cmake")
+  include("C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/POO_WILLIAM_ESTEBAN/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

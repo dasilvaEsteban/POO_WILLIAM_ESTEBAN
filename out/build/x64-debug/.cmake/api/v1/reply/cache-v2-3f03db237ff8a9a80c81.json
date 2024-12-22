@@ -15,7 +15,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.41.34120/bin/Hostx64/x64/lib.exe"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/Hostx64/x64/lib.exe"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -39,7 +39,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug"
+			"value" : "c:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -63,7 +63,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "29"
+			"value" : "25"
 		},
 		{
 			"name" : "CMAKE_CACHE_PATCH_VERSION",
@@ -75,7 +75,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "5"
+			"value" : "1"
 		},
 		{
 			"name" : "CMAKE_COMMAND",
@@ -87,7 +87,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -99,7 +99,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cpack.exe"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -111,7 +111,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER",
@@ -467,7 +467,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -563,7 +563,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN"
+			"value" : "C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Users/esteban.da-silva/Source/Repos/POO_WILLIAM_ESTEBAN/out/install/x64-debug"
+			"value" : "C:/Users/unive/Source/Repos/POO_WILLIAM_ESTEBAN/out/install/x64-debug"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -591,7 +591,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.41.34120/bin/Hostx64/x64/link.exe"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/Hostx64/x64/link.exe"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -603,7 +603,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -891,7 +891,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.29"
+			"value" : "F:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.25"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1127,7 +1127,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/SFML/SFML/lib/freetype.lib"
+			"value" : "C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/SFML/SFML/lib/freetype.lib"
 		},
 		{
 			"name" : "POO_WILLIAM_ESTEBAN_BINARY_DIR",
@@ -1139,7 +1139,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug"
+			"value" : "C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN/out/build/x64-debug"
 		},
 		{
 			"name" : "POO_WILLIAM_ESTEBAN_IS_TOP_LEVEL",
@@ -1163,19 +1163,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/esteban.da-silva/source/repos/POO_WILLIAM_ESTEBAN"
-		},
-		{
-			"name" : "SFML_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "The directory containing a CMake configuration file for SFML."
-				}
-			],
-			"type" : "PATH",
-			"value" : "SFML_DIR-NOTFOUND"
+			"value" : "C:/Users/unive/source/repos/POO_WILLIAM_ESTEBAN"
 		},
 		{
 			"name" : "SFML_DOC_DIR",
