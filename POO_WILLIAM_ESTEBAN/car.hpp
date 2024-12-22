@@ -1,5 +1,5 @@
 //#pragma once
-//#define _USE_MATH_DEFINES
+//#define _USE_MATH_DEFINESlll
 //#include <cmath>
 //
 //class Car{
@@ -37,8 +37,8 @@ private:
     float speed;
     float patern;
 
-    std::mt19937 gen; // Générateur aléatoire
-    std::uniform_int_distribution<> dist; // Distribution pour déterminer si la voiture tourne
+    std::mt19937 gen; // GÃ©nÃ©rateur alÃ©atoire
+    std::uniform_int_distribution<> dist; // Distribution pour dÃ©terminer si la voiture tourne
     int turn_direction; // 0 = tout droit, 1 = gauche, 2 = droite
 
 public:
@@ -56,7 +56,7 @@ public:
     void speedUp();
     void speedDown();
 
-    bool shouldTurn(); // Vérifie si la voiture doit tourner
+    bool shouldTurn(); // VÃ©rifie si la voiture doit tourner
     int getTurnDirection() const; // Retourne la direction de la rotation
 };
 
