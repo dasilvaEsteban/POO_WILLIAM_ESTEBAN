@@ -39,7 +39,7 @@ Traffic_color current_slave_traffic_light = Traffic_color::red;
 vector<Car> cars;
 mutex car_mutex;
 vector<Pieton> pietons;
-vector<Bus> buss;
+vector<Bus> buses;
 
 // Fonction pour convertir un état de feu en couleur SFML
 const sf::Color& get_SFML_color(const Traffic_light& traffic_light)
@@ -240,14 +240,14 @@ void spawn_pietons(vector<Pieton>& pietons, stop_token stop_token) {
         }
     }
 }
-void spawn_buss(vector<Bus>& buss, stop_token stop_token) {
+void spawn_buss(vector<Bus>& buses, stop_token stop_token) {
     const int max_buss = 5;
     const int max_par_coin = 2;
 
     while (!stop_token.stop_requested()) {
         std::this_thread::sleep_for(6s);
 
-        if (buss.size() != max_buss) {
+        if (buses.size() != max_buss) {
             std::default_random_engine generator(std::random_device{}());
             std::uniform_int_distribution<int> edge_dist(0, 3); // Choix du bord
             std::uniform_int_distribution<int> pattern_dist(1, 3); // Choix du pattern
@@ -259,7 +259,7 @@ void spawn_buss(vector<Bus>& buss, stop_token stop_token) {
             int nb_bus_droite = 0;
             int nb_bus_gauche = 0;
 
-            for (auto& bus : buss) {
+            for (auto& bus : buses) {
                 if (bus.getY() > 620 && bus.getAngle() == 270) {   // Bas vers Haut
                     nb_bus_bas++;
                 }
@@ -279,25 +279,25 @@ void spawn_buss(vector<Bus>& buss, stop_token stop_token) {
                 if (nb_bus_haut >= max_par_coin) {
                     break;
                 }
-                buss.push_back(Bus(300, 0, 90, 0, pattern));
+                buses.push_back(Bus(300, 0, 90, 0, pattern));
                 break;
             case 1: // Bord bas
                 if (nb_bus_bas >= max_par_coin) {
                     break;
                 }
-                buss.push_back(Bus(500, 765, 270, 0, pattern));
+                buses.push_back(Bus(500, 765, 270, 0, pattern));
                 break;
             case 2: // Bord gauche
                 if (nb_bus_gauche >= max_par_coin) {
                     break;
                 }
-                buss.push_back(Bus(0, 500, 0, 0, pattern));
+                buses.push_back(Bus(0, 500, 0, 0, pattern));
                 break;
             case 3: // Bord droit
                 if (nb_bus_droite >= max_par_coin) {
                     break;
                 }
-                buss.push_back(Bus(765, 305, 180, 0, pattern));
+                buses.push_back(Bus(765, 305, 180, 0, pattern));
                 break;
             }
 
@@ -307,7 +307,7 @@ void spawn_buss(vector<Bus>& buss, stop_token stop_token) {
 }
 
 //Fonction pour gérer le comportement des voitures, pietons et bus
-void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buss, stop_token stop_token) {
+void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buses, stop_token stop_token) {
     const float safety_distance = 120.0f; // Distance de sécurité
 
     while (!stop_token.stop_requested()) {
@@ -366,7 +366,7 @@ void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buss, sto
 
 
             // Vérification de la distance avec les bus
-            for (const auto& bus : buss) {
+            for (const auto& bus : buses) {
                 float distance = car.distanceToBus(bus);
                 // Vérifier si un bus est devant dans la même direction
                 if (distance < safety_distance && distance != numeric_limits<float>::infinity()) {
@@ -418,7 +418,7 @@ void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buss, sto
         }
     }
 }
-void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buss, stop_token stop_token) {
+void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buses, stop_token stop_token) {
     const float safety_distance = 70.0f; // Distance de sécurité
 
     while (!stop_token.stop_requested()) {
@@ -473,7 +473,7 @@ void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buss, 
 
 
             // Vérification de la distance avec les autres bus
-            for (const auto& other_bus : buss) {
+            for (const auto& other_bus : buses) {
                 float distance = pieton.distanceToBus(other_bus);
                 // Vérifier si un bus est devant dans la même direction
                 if (distance < safety_distance + 50) {
@@ -503,7 +503,7 @@ void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buss, 
         }
     }
 }
-void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, stop_token stop_token) {
+void run_buss(vector<Bus>& buses, vector<Pieton>& pietons, vector<Car>& cars, stop_token stop_token) {
     const float safety_distance = 120.0f; // Distance de sécurité
 
     while (!stop_token.stop_requested()) {
@@ -511,7 +511,7 @@ void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, sto
 
         int indice = 0;
 
-        for (auto& bus : buss) {
+        for (auto& bus : buses) {
             bool is_blocked = false;
             bool should_slow_down = false;
 
@@ -534,7 +534,7 @@ void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, sto
             }
 
             // Vérification de la distance avec les autres bus
-            for (const auto& other_bus : buss) {
+            for (const auto& other_bus : buses) {
                 if (&bus != &other_bus) { // Ne pas se comparer à soi-même
                     float distance = bus.distanceTo(other_bus);
                     // Vérifier si un bus est devant dans la même direction
@@ -607,7 +607,7 @@ void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, sto
 
             // Supprimer les bus hors écran
             if (bus.getX() > 800 || bus.getY() > 800 || bus.getX() < 0 || bus.getY() < 0) {
-                buss.erase(buss.begin() + indice);
+                buses.erase(buses.begin() + indice);
                 indice--;
             }
             indice++;
@@ -685,12 +685,12 @@ int main()
     //Lancements des threads
     jthread thread_traffic_light_master(run_traffic_light,std::ref(traffic_light_master), std::ref(traffic_light_slave), stopping.get_token());
     jthread write_traffic_light(print_traffic_light,std::ref(traffic_light_master), std::ref(traffic_light_slave), stopping.get_token());
-    jthread voiture(run_cars, ref(cars), ref(pietons), ref(buss), stopping.get_token());
+    jthread voiture(run_cars, ref(cars), ref(pietons), ref(buses), stopping.get_token());
     jthread spawn_c(spawn_cars, ref(cars), stopping.get_token());
-    jthread pieton(run_pietons, ref(pietons), ref(cars), ref(buss), stopping.get_token());
+    jthread pieton(run_pietons, ref(pietons), ref(cars), ref(buses), stopping.get_token());
     jthread spawn_p(spawn_pietons, ref(pietons), stopping.get_token());
-    jthread bus(run_buss, ref(buss), ref(pietons), ref(cars), stopping.get_token());
-    jthread spawn_b(spawn_buss, ref(buss), stopping.get_token());
+    jthread bus(run_buss, ref(buses), ref(pietons), ref(cars), stopping.get_token());
+    jthread spawn_b(spawn_buss, ref(buses), stopping.get_token());
 
     while (window.isOpen())
     {
@@ -731,7 +731,7 @@ int main()
         }
 
 
-        for (const auto& bus : buss)
+        for (const auto& bus : buses)
         {
 
             busSprite.setPosition(bus.getX(), bus.getY());
