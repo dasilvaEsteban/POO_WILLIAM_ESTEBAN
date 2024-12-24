@@ -39,7 +39,7 @@ Traffic_color current_slave_traffic_light = Traffic_color::red;
 vector<Car> cars;
 mutex car_mutex;
 vector<Pieton> pietons;
-vector<Bus> buss;
+vector<Bus> buses;
 
 // Fonction pour convertir un état de feu en couleur SFML
 const sf::Color& get_SFML_color(const Traffic_light& traffic_light)
@@ -113,201 +113,143 @@ void print_traffic_light(Traffic_light& traffic_light_master, Traffic_light& tra
     }
 }
 
-//Fonction pour gérer l'apparition des voitures, pietons et bus
 void spawn_cars(vector<Car>& cars, stop_token stop_token) {
-    const int max_cars = 5;
-    const int max_par_coin = 2;
+    const int max_cars = 5; // Nombre maximum de voitures pouvant être créées
+    const int max_par_coin = 2; // Nombre maximum de voitures par bord
 
     while (!stop_token.stop_requested()) {
-        std::this_thread::sleep_for(3s);
+        std::this_thread::sleep_for(3s); // Attendre 3 secondes avant chaque itération
 
-        unique_lock<std::mutex> lock(car_mutex); // Verrouiller pour travailler sur les voitures
+        unique_lock<std::mutex> lock(car_mutex); // Synchronisation pour accéder à la liste des voitures
         if (cars.size() != max_cars) {
             std::default_random_engine generator(std::random_device{}());
-            std::uniform_int_distribution<int> edge_dist(0, 3); // Choix du bord
-            std::uniform_int_distribution<int> pattern_dist(1, 3); // Choix du pattern
+            std::uniform_int_distribution<int> edge_dist(0, 3); // Génération aléatoire du bord d'apparition
+            std::uniform_int_distribution<int> pattern_dist(1, 3); // Génération aléatoire du pattern
             int edge = edge_dist(generator);
             int pattern = pattern_dist(generator);
 
+            // Comptabiliser le nombre de voitures par bord
             int nb_car_haut = 0;
             int nb_car_bas = 0;
             int nb_car_droite = 0;
             int nb_car_gauche = 0;
 
             for (auto& car : cars) {
-                if (car.getY() > 620 && car.getAngle() == 270) {   // Bas vers Haut
-                    nb_car_bas++;
-                }
-                if (car.getY() < 180 && car.getAngle() == 90) {  // Haut vers Bas
-                    nb_car_haut++;
-                }
-                if (car.getX() > 620 && car.getAngle() == 180) { // Droite vers Gauche
-                    nb_car_droite++;
-                }
-                if (car.getX() < 180 && car.getAngle() == 0) {    // Gauche vers Droite
-                    nb_car_gauche++;
-                }
+                if (car.getY() > 620 && car.getAngle() == 270) nb_car_bas++;
+                if (car.getY() < 180 && car.getAngle() == 90) nb_car_haut++;
+                if (car.getX() > 620 && car.getAngle() == 180) nb_car_droite++;
+                if (car.getX() < 180 && car.getAngle() == 0) nb_car_gauche++;
             }
 
+            // Ajouter une voiture en fonction du bord d'apparition
             switch (edge) {
-            case 0: // Bord haut
-                if (nb_car_haut >= max_par_coin) {
-                    break;
-                }
-                cars.push_back(Car(370, 0, 90, 0, pattern));
+            case 0:
+                if (nb_car_haut < max_par_coin) cars.push_back(Car(370, 0, 90, 0, pattern));
                 break;
-            case 1: // Bord bas
-                if (nb_car_bas >= max_par_coin) {
-                    break;
-                }
-                cars.push_back(Car(430, 765, 270, 0, pattern));
+            case 1:
+                if (nb_car_bas < max_par_coin) cars.push_back(Car(430, 765, 270, 0, pattern));
                 break;
-            case 2: // Bord gauche
-                if (nb_car_gauche >= max_par_coin) {
-                    break;
-                }
-                cars.push_back(Car(0, 430, 0, 0, pattern));
+            case 2:
+                if (nb_car_gauche < max_par_coin) cars.push_back(Car(0, 430, 0, 0, pattern));
                 break;
-            case 3: // Bord droit
-                if (nb_car_droite >= max_par_coin) {
-                    break;
-                }
-                cars.push_back(Car(765, 365, 180, 0, pattern));
+            case 3:
+                if (nb_car_droite < max_par_coin) cars.push_back(Car(765, 365, 180, 0, pattern));
                 break;
             }
-
         }
-
     }
 }
 void spawn_pietons(vector<Pieton>& pietons, stop_token stop_token) {
-    const int max_pietons = 8;
-    const int max_par_coin = 3;
+    const int max_pietons = 8; // Nombre maximum de piétons pouvant être créés
+    const int max_par_coin = 3; // Nombre maximum de piétons par bord
 
     while (!stop_token.stop_requested()) {
-        std::this_thread::sleep_for(4s);
+        std::this_thread::sleep_for(4s); // Attendre 4 secondes avant chaque itération
+
         if (pietons.size() != max_pietons) {
             std::default_random_engine generator(std::random_device{}());
-            std::uniform_int_distribution<int> edge_dist(0, 3); // Choix du bord
+            std::uniform_int_distribution<int> edge_dist(0, 3); // Génération aléatoire du bord d'apparition
             int edge = edge_dist(generator);
 
+            // Comptabiliser le nombre de piétons par bord
             int nb_pieton_haut = 0;
             int nb_pieton_bas = 0;
             int nb_pieton_droite = 0;
             int nb_pieton_gauche = 0;
 
-            for (auto& car : cars) {
-                if (car.getY() > 580 && car.getAngle() == 270) {   // Bas vers Haut
-                    nb_pieton_bas++;
-                }
-                if (car.getY() < 210 && car.getAngle() == 90) {  // Haut vers Bas
-                    nb_pieton_haut++;
-                }
-                if (car.getX() > 580 && car.getAngle() == 180) { // Droite vers Gauche
-                    nb_pieton_droite++;
-                }
-                if (car.getX() < 210 && car.getAngle() == 0) {    // Gauche vers Droite
-                    nb_pieton_gauche++;
-                }
+            for (auto& pieton : pietons) {
+                if (pieton.getY() > 580 && pieton.getAngle() == 270) nb_pieton_bas++;
+                if (pieton.getY() < 210 && pieton.getAngle() == 90) nb_pieton_haut++;
+                if (pieton.getX() > 580 && pieton.getAngle() == 180) nb_pieton_droite++;
+                if (pieton.getX() < 210 && pieton.getAngle() == 0) nb_pieton_gauche++;
             }
 
+            // Ajouter un piéton en fonction du bord d'apparition
             switch (edge) {
-            case 0: // Bord haut
-                if (nb_pieton_haut >= max_par_coin) {
-                    break;
-                }
-                pietons.push_back(Pieton(230, 0, 90, 0));
+            case 0:
+                if (nb_pieton_haut < max_par_coin) pietons.push_back(Pieton(230, 0, 90, 0));
                 break;
-            case 1: // Bord bas
-                if (nb_pieton_bas >= max_par_coin) {
-                    break;
-                }
-                pietons.push_back(Pieton(580, 765, 270, 0));
+            case 1:
+                if (nb_pieton_bas < max_par_coin) pietons.push_back(Pieton(580, 765, 270, 0));
                 break;
-            case 2: // Bord gauche
-                if (nb_pieton_gauche >= max_par_coin) {
-                    break;
-                }
-                pietons.push_back(Pieton(0, 210, 0, 0));
+            case 2:
+                if (nb_pieton_gauche < max_par_coin) pietons.push_back(Pieton(0, 210, 0, 0));
                 break;
-            case 3: // Bord droit
-                if (nb_pieton_droite >= max_par_coin) {
-                    break;
-                }
-                pietons.push_back(Pieton(765, 560, 180, 0));
+            case 3:
+                if (nb_pieton_droite < max_par_coin) pietons.push_back(Pieton(765, 560, 180, 0));
                 break;
             }
         }
     }
 }
-void spawn_buss(vector<Bus>& buss, stop_token stop_token) {
-    const int max_buss = 5;
-    const int max_par_coin = 2;
+void spawn_buses(vector<Bus>& buses, stop_token stop_token) {
+    const int max_buses = 4; // Nombre maximum de bus pouvant être créés
+    const int max_par_coin = 2; // Nombre maximum de bus par bord
 
     while (!stop_token.stop_requested()) {
-        std::this_thread::sleep_for(6s);
+        std::this_thread::sleep_for(7s); // Attendre 7 secondes avant chaque itération
 
-        if (buss.size() != max_buss) {
+        if (buses.size() != max_buses) {
             std::default_random_engine generator(std::random_device{}());
-            std::uniform_int_distribution<int> edge_dist(0, 3); // Choix du bord
-            std::uniform_int_distribution<int> pattern_dist(1, 3); // Choix du pattern
+            std::uniform_int_distribution<int> edge_dist(0, 3); // Génération aléatoire du bord d'apparition
+            std::uniform_int_distribution<int> pattern_dist(1, 3); // Génération aléatoire du pattern
             int edge = edge_dist(generator);
             int pattern = pattern_dist(generator);
 
+            // Comptabiliser le nombre de bus par bord
             int nb_bus_haut = 0;
             int nb_bus_bas = 0;
             int nb_bus_droite = 0;
             int nb_bus_gauche = 0;
 
-            for (auto& bus : buss) {
-                if (bus.getY() > 620 && bus.getAngle() == 270) {   // Bas vers Haut
-                    nb_bus_bas++;
-                }
-                if (bus.getY() < 180 && bus.getAngle() == 90) {  // Haut vers Bas
-                    nb_bus_haut++;
-                }
-                if (bus.getX() > 620 && bus.getAngle() == 180) { // Droite vers Gauche
-                    nb_bus_droite++;
-                }
-                if (bus.getX() < 180 && bus.getAngle() == 0) {    // Gauche vers Droite
-                    nb_bus_gauche++;
-                }
+            for (auto& bus : buses) {
+                if (bus.getY() > 620 && bus.getAngle() == 270) nb_bus_bas++;
+                if (bus.getY() < 180 && bus.getAngle() == 90) nb_bus_haut++;
+                if (bus.getX() > 620 && bus.getAngle() == 180) nb_bus_droite++;
+                if (bus.getX() < 180 && bus.getAngle() == 0) nb_bus_gauche++;
             }
 
+            // Ajouter un bus en fonction du bord d'apparition
             switch (edge) {
-            case 0: // Bord haut
-                if (nb_bus_haut >= max_par_coin) {
-                    break;
-                }
-                buss.push_back(Bus(300, 0, 90, 0, pattern));
+            case 0:
+                if (nb_bus_haut < max_par_coin) buses.push_back(Bus(300, 0, 90, 0, pattern));
                 break;
-            case 1: // Bord bas
-                if (nb_bus_bas >= max_par_coin) {
-                    break;
-                }
-                buss.push_back(Bus(500, 765, 270, 0, pattern));
+            case 1:
+                if (nb_bus_bas < max_par_coin) buses.push_back(Bus(500, 765, 270, 0, pattern));
                 break;
-            case 2: // Bord gauche
-                if (nb_bus_gauche >= max_par_coin) {
-                    break;
-                }
-                buss.push_back(Bus(0, 500, 0, 0, pattern));
+            case 2:
+                if (nb_bus_gauche < max_par_coin) buses.push_back(Bus(0, 500, 0, 0, pattern));
                 break;
-            case 3: // Bord droit
-                if (nb_bus_droite >= max_par_coin) {
-                    break;
-                }
-                buss.push_back(Bus(765, 305, 180, 0, pattern));
+            case 3:
+                if (nb_bus_droite < max_par_coin) buses.push_back(Bus(765, 305, 180, 0, pattern));
                 break;
             }
-
         }
-
     }
 }
 
 //Fonction pour gérer le comportement des voitures, pietons et bus
-void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buss, stop_token stop_token) {
+void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buses, stop_token stop_token) {
     const float safety_distance = 120.0f; // Distance de sécurité
 
     while (!stop_token.stop_requested()) {
@@ -366,7 +308,7 @@ void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buss, sto
 
 
             // Vérification de la distance avec les bus
-            for (const auto& bus : buss) {
+            for (const auto& bus : buses) {
                 float distance = car.distanceToBus(bus);
                 // Vérifier si un bus est devant dans la même direction
                 if (distance < safety_distance && distance != numeric_limits<float>::infinity()) {
@@ -418,7 +360,7 @@ void run_cars(vector<Car>& cars, vector<Pieton>& pietons, vector<Bus>& buss, sto
         }
     }
 }
-void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buss, stop_token stop_token) {
+void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buses, stop_token stop_token) {
     const float safety_distance = 70.0f; // Distance de sécurité
 
     while (!stop_token.stop_requested()) {
@@ -473,7 +415,7 @@ void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buss, 
 
 
             // Vérification de la distance avec les autres bus
-            for (const auto& other_bus : buss) {
+            for (const auto& other_bus : buses) {
                 float distance = pieton.distanceToBus(other_bus);
                 // Vérifier si un bus est devant dans la même direction
                 if (distance < safety_distance + 50) {
@@ -503,7 +445,7 @@ void run_pietons(vector<Pieton>& pietons, vector<Car>& cars, vector<Bus>& buss, 
         }
     }
 }
-void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, stop_token stop_token) {
+void run_buses(vector<Bus>& buses, vector<Pieton>& pietons, vector<Car>& cars, stop_token stop_token) {
     const float safety_distance = 120.0f; // Distance de sécurité
 
     while (!stop_token.stop_requested()) {
@@ -511,7 +453,7 @@ void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, sto
 
         int indice = 0;
 
-        for (auto& bus : buss) {
+        for (auto& bus : buses) {
             bool is_blocked = false;
             bool should_slow_down = false;
 
@@ -534,7 +476,7 @@ void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, sto
             }
 
             // Vérification de la distance avec les autres bus
-            for (const auto& other_bus : buss) {
+            for (const auto& other_bus : buses) {
                 if (&bus != &other_bus) { // Ne pas se comparer à soi-même
                     float distance = bus.distanceTo(other_bus);
                     // Vérifier si un bus est devant dans la même direction
@@ -607,7 +549,7 @@ void run_buss(vector<Bus>& buss, vector<Pieton>& pietons, vector<Car>& cars, sto
 
             // Supprimer les bus hors écran
             if (bus.getX() > 800 || bus.getY() > 800 || bus.getX() < 0 || bus.getY() < 0) {
-                buss.erase(buss.begin() + indice);
+                buses.erase(buses.begin() + indice);
                 indice--;
             }
             indice++;
@@ -685,12 +627,12 @@ int main()
     //Lancements des threads
     jthread thread_traffic_light_master(run_traffic_light,std::ref(traffic_light_master), std::ref(traffic_light_slave), stopping.get_token());
     jthread write_traffic_light(print_traffic_light,std::ref(traffic_light_master), std::ref(traffic_light_slave), stopping.get_token());
-    jthread voiture(run_cars, ref(cars), ref(pietons), ref(buss), stopping.get_token());
-    jthread spawn_c(spawn_cars, ref(cars), stopping.get_token());
-    jthread pieton(run_pietons, ref(pietons), ref(cars), ref(buss), stopping.get_token());
-    jthread spawn_p(spawn_pietons, ref(pietons), stopping.get_token());
-    jthread bus(run_buss, ref(buss), ref(pietons), ref(cars), stopping.get_token());
-    jthread spawn_b(spawn_buss, ref(buss), stopping.get_token());
+    jthread spawn_bus(spawn_buses, ref(buses), stopping.get_token());
+    jthread spawn_pieton(spawn_pietons, ref(pietons), stopping.get_token());
+    jthread spawn_car(spawn_cars, ref(cars), stopping.get_token());
+    jthread voiture(run_cars, ref(cars), ref(pietons), ref(buses), stopping.get_token());
+    jthread pieton(run_pietons, ref(cars), ref(pietons), ref(buses), stopping.get_token());
+    jthread bus(run_buses, ref(cars), ref(pietons), ref(buses), stopping.get_token());
 
     while (window.isOpen())
     {
@@ -731,7 +673,7 @@ int main()
         }
 
 
-        for (const auto& bus : buss)
+        for (const auto& bus : buses)
         {
 
             busSprite.setPosition(bus.getX(), bus.getY());

@@ -6,195 +6,155 @@ Car::Car(float x, float y, float angle, float speed, float patern)
     : x(x), y(y), angle(angle), speed(speed), patern(patern), initangle(angle)
 {}
 
-float
-Car::getX() const
-{
+float Car::getX() const {
     return x;
 }
 
-float
-Car::getY() const
-{
+float Car::getY() const {
     return y;
 }
 
-float
-Car::getAngle() const
-{
+float Car::getAngle() const {
     return angle;
 }
 
-float
-Car::getinitAngle() const
-{
-    return initangle;
-}
-
-float
-Car::getSpeed() const
-{
+float Car::getSpeed() const {
     return speed;
 }
 
-float
-Car::getPatern() const
-{
+float Car::getPatern() const {
     return patern;
 }
 
-
-void
-Car::move()
-{
-    x += static_cast<float>(cos(angle * M_PI / 180.0) * speed);
-    y += static_cast<float>(sin(angle * M_PI / 180.0) * speed);
+float Car::getinitAngle() const {
+    return initangle;
 }
 
-void
-Car::turnLeft()
-{
-    angle -= speed / 3.0f;
-    if (angle >= initangle - 91 and angle <= initangle - 90) {
-        angle = initangle - 90;
-    }
-}
-
-void
-Car::turnRight()
-{
-    angle += speed / 3.0f;
-    if (angle <= initangle + 91 and angle >= initangle + 90) {
-        angle = initangle + 90;
-    }
-}
-
-void
-Car::speedUp()
-{
+void Car::speedUp() {
+    // Augmente la vitesse de la voiture si elle est en dessous de 3.0
     if (speed < 3.0f)
         speed += 0.1f;
 }
 
-void
-Car::speedDown()
-{
+void Car::speedDown() {
+    // Diminue la vitesse, mais ne permet pas de descendre en dessous de 0
     if (speed > 0.f)
         speed -= 0.1f;
     else
         speed = 0;
 }
 
+void Car::turnLeft() {
+    // Tourne la voiture à gauche proportionnellement à la vitesse
+    angle -= speed / 3.0f;
+    if (angle >= initangle - 91 && angle <= initangle - 90) {
+        angle = initangle - 90; // Limite maximale pour un virage à gauche
+    }
+}
+
+void Car::turnRight() {
+    // Tourne la voiture à droite proportionnellement à la vitesse
+    angle += speed / 3.0f;
+    if (angle <= initangle + 91 && angle >= initangle + 90) {
+        angle = initangle + 90; // Limite maximale pour un virage à droite
+    }
+}
+
+void Car::move() {
+    // Déplace la voiture selon son angle et sa vitesse
+    x += static_cast<float>(cos(angle * M_PI / 180.0) * speed);
+    y += static_cast<float>(sin(angle * M_PI / 180.0) * speed);
+}
 
 float Car::distanceTo(const Car& other) const {
-    // Calcul des différences de position
+    // Calcule la distance entre cette voiture et une autre voiture
     float dx = other.x - x;
     float dy = y - other.y;
 
-
-    // Direction de la voiture actuelle
+    // Détermine la direction de la voiture actuelle
     float directionX = cos(angle * M_PI / 180.0);
     float directionY = -sin(angle * M_PI / 180.0);
-
 
     // Projection du vecteur (dx, dy) sur la direction
     float dotProduct = dx * directionX + dy * directionY;
 
-
-
-    // Calcul de la distance perpendiculaire à la trajectoire
+    // Distance latérale par rapport à la trajectoire
     float crossProduct = dx * directionY - dy * directionX;
     float lateralDistance = std::abs(crossProduct);
 
-
-
-    // Si le point projeté est derrière (dotProduct < 0) avec une limite d'imprecision, retournez une distance infinie
+    // Si l'autre voiture est derrière avec une tolérance, retourne une distance infinie
     if (dotProduct < 10) {
         return std::numeric_limits<float>::infinity();
     }
 
-    // Tolérance pour considérer qu'une voiture est "sur la trajectoire"
-    float trajectoryTolerance = 40.0f; // Ajustez en fonction de la largeur acceptable
+    // Vérifie si l'autre voiture est dans une tolérance définie pour la trajectoire
+    float trajectoryTolerance = 40.0f;
 
-    // Si la voiture est sur la trajectoire (proche en latéral), retournez la distance frontale
     if (lateralDistance <= trajectoryTolerance) {
-        return dotProduct;
+        return dotProduct; // Distance frontale si sur la trajectoire
     }
-    // Sinon, retournez une distance infinie
-    return std::numeric_limits<float>::infinity();
+
+    return std::numeric_limits<float>::infinity(); // Sinon, distance infinie
 }
 
 float Car::distanceToPiet(const Pieton& other) const {
-    // Calcul des différences de position
+    // Mesure la distance entre la voiture et un piéton
     float dx = other.getX() - x;
     float dy = y - other.getY();
 
-
-    // Direction de la voiture actuelle
+    // Direction de la voiture
     float directionX = cos(angle * M_PI / 180.0);
     float directionY = -sin(angle * M_PI / 180.0);
 
-
-    // Projection du vecteur (dx, dy) sur la direction
+    // Projection pour mesurer la distance frontale
     float dotProduct = dx * directionX + dy * directionY;
 
-
-
-    // Calcul de la distance perpendiculaire à la trajectoire
+    // Calcul de la distance latérale
     float crossProduct = dx * directionY - dy * directionX;
     float lateralDistance = std::abs(crossProduct);
 
-
-
-    // Si le point projeté est derrière (dotProduct < 0), retournez une distance infinie
+    // Retourne une distance infinie si le piéton est derrière
     if (dotProduct < 10) {
         return std::numeric_limits<float>::infinity();
     }
 
-    // Tolérance pour considérer qu'une voiture est "sur la trajectoire"
-    float trajectoryTolerance = 40.0f; // Ajustez en fonction de la largeur acceptable
+    // Tolérance pour considérer que le piéton est sur la trajectoire
+    float trajectoryTolerance = 40.0f;
 
-    // Si la voiture est sur la trajectoire (proche en latéral), retournez la distance frontale
     if (lateralDistance <= trajectoryTolerance) {
         return dotProduct;
     }
-    // Sinon, retournez une distance infinie
+
     return std::numeric_limits<float>::infinity();
 }
 
 float Car::distanceToBus(const Bus& other) const {
-    // Calcul des différences de position
+    // Calcule la distance entre la voiture et un bus
     float dx = other.getX() - x;
     float dy = y - other.getY();
 
-
-    // Direction de la voiture actuelle
+    // Direction actuelle de la voiture
     float directionX = cos(angle * M_PI / 180.0);
     float directionY = -sin(angle * M_PI / 180.0);
 
-
-    // Projection du vecteur (dx, dy) sur la direction
+    // Projection du vecteur pour mesurer la distance
     float dotProduct = dx * directionX + dy * directionY;
 
-
-
-    // Calcul de la distance perpendiculaire à la trajectoire
+    // Calcul de la distance latérale
     float crossProduct = dx * directionY - dy * directionX;
     float lateralDistance = std::abs(crossProduct);
 
-
-
-    // Si le point projeté est derrière (dotProduct < 0) avec une limite d'imprecision, retournez une distance infinie
+    // Si le bus est derrière, retourne une distance infinie
     if (dotProduct < 10) {
         return std::numeric_limits<float>::infinity();
     }
 
-    // Tolérance pour considérer qu'une voiture est "sur la trajectoire"
-    float trajectoryTolerance = 40.0f; // Ajustez en fonction de la largeur acceptable
+    // Vérifie si le bus est dans la tolérance pour la trajectoire
+    float trajectoryTolerance = 40.0f;
 
-    // Si la voiture est sur la trajectoire (proche en latéral), retournez la distance frontale
     if (lateralDistance <= trajectoryTolerance) {
-        return dotProduct;
+        return dotProduct; // Distance frontale si sur la trajectoire
     }
-    // Sinon, retournez une distance infinie
+
     return std::numeric_limits<float>::infinity();
 }
