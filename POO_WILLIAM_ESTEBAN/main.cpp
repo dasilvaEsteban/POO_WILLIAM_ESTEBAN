@@ -237,11 +237,11 @@ void spawn_buses(vector<Bus>& buses, stop_token stop_token) {
             case 1:
                 if (nb_bus_bas < max_par_coin) buses.push_back(Bus(500, 765, 270, 0, pattern));
                 break;
-            case 2:
-                if (nb_bus_gauche < max_par_coin) buses.push_back(Bus(0, 500, 0, 0, pattern));
-                break;
-            case 3:
-                if (nb_bus_droite < max_par_coin) buses.push_back(Bus(765, 305, 180, 0, pattern));
+            case 2: // Bord droit
+                if (nb_bus_droite >= max_par_coin) {
+                    break;
+                }
+                buss.push_back(Bus(765, 305, 180, 0, pattern));
                 break;
             }
         }
