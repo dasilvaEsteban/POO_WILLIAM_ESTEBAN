@@ -27,7 +27,7 @@ static const sf::Color Orange(255, 165, 0);
 
 // Déclaration des durées d'attente pour les transitions de feux
 const auto time_transit = 3s;
-const auto time_waiting = 8s;
+const auto time_wait = 8s;
 
 // Mutex et variables conditionnelles pour la gestion des feux de circulation
 std::mutex traffic_mutex;
@@ -55,70 +55,54 @@ const sf::Color& get_SFML_color(const Traffic_light& traffic_light)
 }
 
 
-//Fonction qui contrôle l'alternance des feux tricolores principaux (master) et secondaires (slave)
+// Fonction qui contrôle l'alternance des feux tricolores principaux (master) et secondaires (slave)
 void run_traffic_light(Traffic_light& traffic_light_master, Traffic_light& traffic_light_slave, std::stop_token stop_token)
 {
-    // Initialisation des feux : le feu principal est vert, le secondaire est rouge
     traffic_light_master.set_traffic_color(Traffic_color::green);
     traffic_light_slave.set_traffic_color(Traffic_color::red);
-
-    // Boucle principale du thread
     while (!stop_token.stop_requested())
     {
         {
-            // Mettre à jour les états globaux avec un verrou
             std::lock_guard<std::mutex> lock(traffic_mutex);
             current_master_traffic_light = traffic_light_master.get_traffic_color();
             current_slave_traffic_light = traffic_light_slave.get_traffic_color();
         }
-        traffic_cv.notify_all(); // Notifier les autres threads du changement d'état
+        traffic_cv.notify_all();
 
-        // Attendre pendant la durée du feu
-        std::this_thread::sleep_for(time_waiting);
-
-        // Si le feu principal est vert
+        std::this_thread::sleep_for(time_wait);
         if (traffic_light_master.get_traffic_color() == Traffic_color::green)
         {
-            // Passer directement au rouge
-            traffic_light_master.set_traffic_color(Traffic_color::red);
+            ++traffic_light_master;
+            if (traffic_light_master.get_traffic_color() == Traffic_color::orange) {
+                {
+                    std::lock_guard<std::mutex> lock(traffic_mutex);
+                    current_master_traffic_light = traffic_light_master.get_traffic_color();
+                }
+                traffic_cv.notify_all();
 
-            {
-                std::lock_guard<std::mutex> lock(traffic_mutex);
-                current_master_traffic_light = traffic_light_master.get_traffic_color();
+                std::this_thread::sleep_for(time_transit);
+                ++traffic_light_master;
             }
-            traffic_cv.notify_all();
-
-            // Passer le feu secondaire au vert
-            traffic_light_slave.set_traffic_color(Traffic_color::green);
+            ++traffic_light_slave;
         }
-        else // Si le feu principal est rouge
+        else
         {
-            // Passer le feu principal à l'orange
-            traffic_light_master.set_traffic_color(Traffic_color::orange);
-
-            {
-                std::lock_guard<std::mutex> lock(traffic_mutex);
-                current_master_traffic_light = traffic_light_master.get_traffic_color();
+            ++traffic_light_slave;
+            if (traffic_light_slave.get_traffic_color() == Traffic_color::orange) {
+                {
+                    std::lock_guard<std::mutex> lock(traffic_mutex);
+                    current_slave_traffic_light = traffic_light_slave.get_traffic_color();
+                }
+                traffic_cv.notify_all();
+                std::this_thread::sleep_for(time_transit);
+                ++traffic_light_slave;
             }
-            traffic_cv.notify_all();
-
-            // Attendre pendant la durée de transition
-            std::this_thread::sleep_for(time_transit);
-
-            // Passer le feu principal au vert
-            traffic_light_master.set_traffic_color(Traffic_color::green);
-
-            {
-                std::lock_guard<std::mutex> lock(traffic_mutex);
-                current_master_traffic_light = traffic_light_master.get_traffic_color();
-            }
-            traffic_cv.notify_all();
-
-            // Passer le feu secondaire au rouge
-            traffic_light_slave.set_traffic_color(Traffic_color::red);
+            ++traffic_light_master;
         }
+
     }
 }
+
 //Fonction qui affiche les états actuels des feux principaux (master) et secondaires (slave) dans la console
 void print_traffic_light(Traffic_light& traffic_light_master, Traffic_light& traffic_light_slave, std::stop_token stop_token)
 {
